@@ -21,7 +21,7 @@ struct buf
 
 int main()
 {
-	buf *query = NULL, *head, *data = NULL, *body, *prev;
+	buf *query = NULL, *head, *data = NULL, *body = NULL, *prev;
 	int totlen = 0, totbody = 0;
 	int c = 0, oc = 0;
 	bool stay = true;
@@ -155,11 +155,52 @@ pf("%c", (char)c);
 
 		query = query->next;
 	}
+	puts("\n</ul>");
+
+	if (head->data && 0 == strcmp(method, "GET"))
+	{
+		bool stay = true;
+
+		fputs("<h2>Decoded GET request</h2>\n<pre>", stdout);
+		for (int i = 0; i < head->len; i ++)
+		{
+			char c = head->data[i];
+			if ('\n' == c || 0 == c)
+			{
+				break;
+			}
+			else
+			{
+				if ('%' == c && i + 3 < head->len)
+				{
+					char hex[3] = { 0,0,0 };
+					hex[0] = head->data[++ i];
+					hex[1] = head->data[++ i];
+					int x;
+					sscanf(hex, "%x", &x);
+					c = char(x);
+				}
+
+				if ('<' == c || '>' == c || '&' == c)
+				{
+					printf("&#%d;", (int) c);
+				}
+				else if (0 == c)
+				{
+					fputs("<span style='background: #ffc'>nul</span>", stdout);
+				}
+				else
+				{
+					fputc(c, stdout);
+				}
+			}
+		}
+		fputs("</pre>\n", stdout);
+	}
 
 	delete head;
 
-	puts("\n</ul>");
-	if (data)
+	if (body)
 	{
 		fputs("<h2>Request body</h2>\n<pre>", stdout);
 
@@ -182,6 +223,8 @@ pf("%c", (char)c);
 			data = data->next;
 		}
 		fputs("</pre>\n", stdout);
+
+		delete body;
 	}
 
 	puts("</body>\n</html>\n");
