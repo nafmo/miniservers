@@ -99,7 +99,7 @@ pf("POST: Content-Length: %d\n",bytes);
 				if (BUFLEN == data->len)
 				{
 					data->next = new buf;
-					query = data->next;
+					data = data->next;
 				}
 
 				data->data[data->len ++] = c;
