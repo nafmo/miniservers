@@ -1,0 +1,19 @@
+These are two minimal HTTP servers used for testing purposes:
+
+ echoserver
+
+echos back whatever was sent to it (in HTML form). Useful for testing forms.
+
+ authserver
+
+requires you to send authorization data to it, and echos it back when it
+gets it. Useful for testing authorization.
+
+
+Enable the servers in your /etc/inetd.conf:
+
+81	stream	tcp	nowait	nobody	/usr/sbin/tcpd /path/to/echoserver
+82	stream	tcp	nowait	nobody	/usr/sbin/tcpd /path/to/authserver
+
+
+Peter Karlsson <peter@softwolves.pp.se>
