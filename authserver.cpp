@@ -101,6 +101,7 @@ int main()
 						break;
 
 					case 4:
+						c = b64buf & 0xff;
 						fputsafe(c);
 						b64buf = 0;
 						b64count = 0;
