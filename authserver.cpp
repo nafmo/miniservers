@@ -82,7 +82,7 @@ int main()
 
 			for (p += 6; *p; p ++)
 			{
-				char *b = strchr(base64, *p);
+				const char *b = strchr(base64, *p);
 				int b64val = b ? (b - base64) : 0;
 				if (64 == b64val) b64val = 0;
 				b64buf = (b64buf << 6) | b64val;
