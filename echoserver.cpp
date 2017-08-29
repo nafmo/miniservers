@@ -113,7 +113,12 @@ pf("%c", (char)c);
 	}
 	fclose(stdin);
 
-	fputs("HTTP/1.0 200 Goddag, goddag\nContent-type: text/html\n\n", stdout);
+	fputs("HTTP/1.0 200 Goddag, goddag\r\n"
+	      "Content-type: text/html\r\n"
+	      "Access-Control-Allow-Origin: *\r\n"
+	      "Access-Control-Allow-Methods: *\r\n"
+	      "Access-Control-Allow-Headers: Origin, Content-Type, Accept\r\n"
+	      "\r\n", stdout);
 	printf("<html>\n<head><title>Echo server</title></head>\n"
 	       "<!-- Tittut! -->\n"
 	       "<body>\n<h1>Echo server results for %s</h1>\n"
